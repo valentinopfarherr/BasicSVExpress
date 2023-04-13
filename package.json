@@ -2,8 +2,9 @@
   "name": "3raentrega",
   "version": "1.0.0",
   "description": "",
-  "main": "ProductManager.js",
+  "main": "app.js",
   "scripts": {
+    "dev": "nodemon api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
