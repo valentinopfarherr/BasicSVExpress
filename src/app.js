@@ -1,9 +1,7 @@
-import ProductManager from './ProductManager.js';
-
 const express = require("express");
-const app = express();
-const fs = require("fs");
+const ProductManager = require('./ProductManager.js');
 
+const app = express();
 const manager = new ProductManager('./products.json');
 
 //Home
@@ -12,24 +10,18 @@ app.get("/", (req, res) => {
 });
 
 //Index Products
-app.get("/products", (req, res) => {
-    const products = ProductManager.readFile;
-    const limit = parseInt(req.query.limit);
-    if (limit) {
-      products = products.slice(0, limit);
-    }
-    return res.status(200).send(products);
+app.get("/products", async (req, res) => {
+  const products = await manager.getProducts(parseInt(req.query.limit));
+  return res.status(200).send(products);
 });
 
 // Query Filter
-app.get("/products/:id", (req, res) => {
-    const products = ProductManager.readFile;
-    const id = parseInt(req.params.id);
-    const product = products.find((product) => product.id === id);
-    if (!product) {
-      return res.status(404).send({ error: "Product not found" });
-    }
-    res.status(200).send(product);
+app.get("/products/:id", async (req, res) => {
+  const product = await manager.getProductById(parseInt(req.params.id));
+  if (!product) {
+    return res.status(404).send({ error: "Product not found" });
+  }
+  res.status(200).send(product);
 });
 
 // Initialize the server on port 8080
